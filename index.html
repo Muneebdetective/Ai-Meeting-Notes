@@ -54,8 +54,9 @@
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
             margin-bottom: 30px;
+            will-change: transform, box-shadow;
         }
 
         .add-meeting-btn:hover {
@@ -65,6 +66,7 @@
 
         .add-meeting-btn:active {
             transform: translateY(0);
+            transition: transform 0.05s ease;
         }
 
         .meetings-container {
@@ -74,106 +76,296 @@
         }
 
         .meeting-card {
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            padding: 25px;
-            background: #fafafa;
-            transition: box-shadow 0.3s;
+            border: none;
+            border-radius: 16px;
+            padding: 0;
+            background: white;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            animation: slideInCard 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes slideInCard {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .meeting-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
         }
 
         .meeting-card:hover {
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            transform: translateY(-4px);
         }
 
-        .meeting-header {
+        .card-content {
+            padding: 32px;
+        }
+
+        .meeting-title-section {
+            margin-bottom: 24px;
+        }
+
+        .meeting-title-input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: 600;
+            color: #1f2937;
+            transition: all 0.2s ease;
+            background: #f9fafb;
+            will-change: border-color, background, box-shadow;
+        }
+
+        .meeting-title-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .meeting-title-input::placeholder {
+            color: #9ca3af;
+            font-weight: 500;
+        }
+
+        .meeting-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9ff 0%, #fafbff 100%);
+            border-radius: 12px;
+            border: 1px solid #e0e7ff;
+        }
+
+        .meta-item {
             display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .meta-icon {
+            font-size: 20px;
+            min-width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(102, 126, 234, 0.1);
+        }
+
+        .meta-input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #e0e7ff;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .meta-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
         .input-group {
-            flex: 1;
-            min-width: 150px;
-        }
-
-        .input-group.full-width {
-            flex: 100%;
+            margin-bottom: 20px;
         }
 
         .input-group label {
             display: block;
-            color: #555;
-            font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 5px;
+            color: #374151;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 10px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .input-group input, .input-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 14px;
-            transition: border-color 0.3s;
-            font-family: inherit;
+            letter-spacing: 0.8px;
         }
 
         .input-group textarea {
-            min-height: 60px;
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.7;
+            transition: all 0.3s;
+            font-family: inherit;
+            background: #f9fafb;
+            min-height: 80px;
             resize: vertical;
         }
 
-        .input-group input:focus, .input-group textarea:focus {
+        .input-group textarea:focus {
             outline: none;
             border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .participants-section {
+            margin-bottom: 20px;
+        }
+
+        .participants-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #374151;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .participants-label::before {
+            content: '👥';
+            font-size: 16px;
+        }
+
+        .participants-container {
+            background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+            border: 2px solid #e0e7ff;
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.3s;
+        }
+
+        .participants-container:focus-within {
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
         }
 
         .participants-input {
             display: flex;
-            gap: 5px;
+            gap: 8px;
             flex-wrap: wrap;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            min-height: 40px;
-            background: white;
+            min-height: 44px;
+            align-items: center;
         }
 
         .participant-tag {
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            padding: 4px 10px;
-            background: #667eea;
+            gap: 6px;
+            padding: 6px 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            border-radius: 15px;
+            border-radius: 20px;
             font-size: 13px;
+            font-weight: 500;
+            box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+            transition: all 0.2s;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                opacity: 1;
+                transform: scale(1);
+            }
+            to {
+                opacity: 0;
+                transform: scale(0.7);
+            }
+        }
+
+        @keyframes fadeSlideOut {
+            from {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(-20px) scale(0.95);
+            }
+        }
+
+        /* Button pulse animation for feedback */
+        @keyframes buttonPulse {
+            0%, 100% {
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            }
+            50% {
+                box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
+            }
+        }
+
+        .participant-tag:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.4);
         }
 
         .participant-tag button {
-            background: transparent;
+            background: rgba(255, 255, 255, 0.2);
             border: none;
             color: white;
             cursor: pointer;
             font-size: 16px;
             padding: 0;
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+
+        .participant-tag button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
         }
 
         .participant-input-field {
             flex: 1;
             border: none;
             outline: none;
-            min-width: 100px;
+            min-width: 150px;
             font-size: 14px;
+            background: transparent;
+            padding: 8px;
+            color: #1f2937;
+        }
+
+        .participant-input-field::placeholder {
+            color: #9ca3af;
+            font-style: italic;
         }
 
         .notes-section {
@@ -200,62 +392,104 @@
         .note-item-card {
             display: flex;
             align-items: flex-start;
-            gap: 15px;
-            background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+            gap: 18px;
+            background: linear-gradient(135deg, #f8f9ff 0%, #fefeff 50%, #ffffff 100%);
             border: 2px solid #e0e7ff;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.08);
-            transition: all 0.3s ease;
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: 0 3px 12px rgba(102, 126, 234, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .note-item-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .note-item-card:hover::before {
+            opacity: 1;
         }
 
         .note-item-card:hover {
-            border-color: #667eea;
-            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.15);
-            transform: translateY(-2px);
+            border-color: #c7d2fe;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.18);
+            transform: translateY(-3px);
         }
 
         .note-icon {
-            font-size: 28px;
-            min-width: 40px;
-            height: 40px;
+            font-size: 32px;
+            min-width: 48px;
+            height: 48px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+            border: 2px solid #e0e7ff;
+            border-radius: 12px;
+            box-shadow: 0 3px 8px rgba(102, 126, 234, 0.12);
             flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .note-item-card:hover .note-icon {
+            transform: scale(1.05) rotate(5deg);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
         }
 
         .meeting-notes {
             flex: 1;
-            padding: 15px 18px;
-            border: 1px solid #e0e7ff;
-            border-radius: 8px;
+            padding: 16px 20px;
+            border: 2px solid #e0e7ff;
+            border-radius: 10px;
             font-size: 14px;
-            line-height: 1.8;
+            line-height: 1.9;
             font-family: inherit;
-            transition: all 0.3s;
+            transition: all 0.2s ease;
             background: white;
             resize: vertical;
-            min-height: 120px;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+            min-height: 140px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04);
+            will-change: border-color, background, box-shadow;
         }
 
         .meeting-notes:focus {
             outline: none;
             border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15), inset 0 1px 3px rgba(0, 0, 0, 0.05);
+            background: #fefeff;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.12), inset 0 2px 4px rgba(0, 0, 0, 0.04);
         }
 
         .meeting-notes:hover {
-            border-color: #a5b4fc;
+            border-color: #c7d2fe;
         }
 
         .meeting-notes::placeholder {
             color: #9ca3af;
             font-style: italic;
+        }
+
+        /* Auto-save indicator */
+        .auto-save-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 11px;
+            color: #10b981;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .auto-save-indicator.show {
+            opacity: 1;
         }
 
         .separator {
@@ -266,38 +500,54 @@
 
         .button-group {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             justify-content: flex-end;
+            margin-top: 8px;
         }
 
         .save-btn, .delete-btn {
-            padding: 10px 25px;
+            padding: 12px 28px;
             border: none;
-            border-radius: 6px;
+            border-radius: 10px;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            will-change: transform, box-shadow, background, opacity;
+        }
+
+        .save-btn:disabled, .delete-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
         }
 
         .save-btn {
-            background: #10b981;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             color: white;
         }
 
         .save-btn:hover {
-            background: #059669;
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+
+        .save-btn:active {
+            transform: translateY(0);
         }
 
         .delete-btn {
-            background: #ef4444;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
             color: white;
         }
 
         .delete-btn:hover {
-            background: #dc2626;
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+        }
+
+        .delete-btn:active {
+            transform: translateY(0);
         }
 
         .empty-state {
@@ -495,7 +745,7 @@
             display: none;
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             .container {
                 padding: 20px;
             }
@@ -504,8 +754,26 @@
                 font-size: 22px;
             }
 
-            .meeting-header {
+            .card-content {
+                padding: 24px;
+            }
+
+            .meeting-meta {
+                grid-template-columns: 1fr;
+            }
+
+            .meeting-title-input {
+                font-size: 18px;
+            }
+
+            .note-item-card {
                 flex-direction: column;
+                gap: 12px;
+                padding: 20px;
+            }
+
+            .note-icon {
+                align-self: flex-start;
             }
 
             .button-group {
@@ -514,6 +782,24 @@
 
             .save-btn, .delete-btn {
                 width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+
+            .card-content {
+                padding: 20px;
+            }
+
+            .meeting-meta {
+                padding: 16px;
+            }
+
+            .participants-container {
+                padding: 12px;
             }
         }
     </style>
@@ -564,13 +850,16 @@
         const APP_PASSWORD = 'netpace2025'; // Change this to your desired password
         const SESSION_TIMEOUT = 30 * 60 * 1000; // 30 minutes in milliseconds
 
-        // Debounce utility for auto-save
+        // Optimized debounce utility for auto-save
         let autoSaveTimers = {};
         function debounce(key, func, delay) {
             if (autoSaveTimers[key]) {
                 clearTimeout(autoSaveTimers[key]);
             }
-            autoSaveTimers[key] = setTimeout(func, delay);
+            autoSaveTimers[key] = setTimeout(() => {
+                func();
+                delete autoSaveTimers[key]; // Clean up completed timers
+            }, delay);
         }
 
         // Check authentication on page load
@@ -663,6 +952,7 @@
         // Track if user is currently typing to prevent refresh interruption
         let isUserTyping = false;
         let typingTimeout = null;
+        let lastFetchedData = null;
 
         // Show main application
         function showMainApp() {
@@ -670,12 +960,28 @@
             document.getElementById('mainContainer').style.display = 'block';
             renderMeetings();
 
-            // Auto-refresh data every 5 seconds (but skip if user is typing)
+            // Optimized auto-refresh: only update if data changed and user not typing
             setInterval(async () => {
                 if (!isUserTyping) {
+                    await smartRefresh();
+                }
+            }, 30000);
+        }
+
+        // Smart refresh - only update changed data without full re-render
+        async function smartRefresh() {
+            try {
+                const newMeetings = await loadMeetings();
+                const newDataString = JSON.stringify(newMeetings);
+
+                // Only refresh if data actually changed
+                if (lastFetchedData !== newDataString) {
+                    lastFetchedData = newDataString;
                     await renderMeetings();
                 }
-            }, 5000);
+            } catch (e) {
+                console.error('Smart refresh error:', e);
+            }
         }
 
         // Generate unique ID
@@ -817,50 +1123,97 @@
                 .join('');
 
             card.innerHTML = `
-                <div class="meeting-header">
-                    <div class="input-group full-width">
-                        <label>Meeting Title</label>
-                        <input type="text" class="meeting-title" value="${escapeHtml(meeting.title || '')}" placeholder="Enter meeting title">
+                <div class="card-content">
+                    <!-- Meeting Title Section -->
+                    <div class="meeting-title-section">
+                        <input type="text" class="meeting-title-input meeting-title" value="${escapeHtml(meeting.title || '')}" placeholder="📋 Enter Meeting Title...">
                     </div>
-                    <div class="input-group">
-                        <label>Date</label>
-                        <input type="date" class="meeting-date" value="${meeting.date}">
-                    </div>
-                    <div class="input-group">
-                        <label>Time</label>
-                        <input type="time" class="meeting-time" value="${meeting.time}">
-                    </div>
-                    <div class="input-group full-width">
-                        <label>Participants</label>
-                        <div class="participants-input" data-meeting-id="${meeting.id}">
-                            ${participantsHtml}
-                            <input type="text" class="participant-input-field" placeholder="Type name and press Enter"
-                                   onkeydown="handleParticipantInput(event, '${meeting.id}')">
+
+                    <!-- Meeting Meta Info (Date & Time) -->
+                    <div class="meeting-meta">
+                        <div class="meta-item">
+                            <div class="meta-icon">📅</div>
+                            <input type="date" class="meta-input meeting-date" value="${meeting.date}">
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-icon">🕒</div>
+                            <input type="time" class="meta-input meeting-time" value="${meeting.time}">
                         </div>
                     </div>
-                    <div class="input-group full-width">
-                        <label>Agenda</label>
-                        <textarea class="meeting-agenda" placeholder="Enter meeting agenda">${escapeHtml(meeting.agenda || '')}</textarea>
-                    </div>
-                </div>
 
-                <div class="notes-section">
-                    <label>Meeting Notes</label>
-                    <div class="notes-grid">
-                        <div class="note-item-card">
-                            <div class="note-icon">📝</div>
-                            <textarea class="meeting-notes" placeholder="Enter your meeting notes here...">${escapeHtml(meeting.notes || '')}</textarea>
+                    <!-- Participants Section -->
+                    <div class="participants-section">
+                        <div class="participants-label">Participants</div>
+                        <div class="participants-container">
+                            <div class="participants-input" data-meeting-id="${meeting.id}">
+                                ${participantsHtml}
+                                <input type="text" class="participant-input-field" placeholder="Type name and press Enter..."
+                                       onkeydown="handleParticipantInput(event, '${meeting.id}')">
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="separator"></div>
+                    <!-- Agenda Section -->
+                    <div class="input-group">
+                        <label>📌 Agenda</label>
+                        <textarea class="meeting-agenda" placeholder="What will be discussed in this meeting?">${escapeHtml(meeting.agenda || '')}</textarea>
+                    </div>
 
-                <div class="button-group">
-                    <button class="save-btn" onclick="saveMeeting('${meeting.id}')">Save</button>
-                    <button class="delete-btn" onclick="deleteMeeting('${meeting.id}')">Delete</button>
+                    <!-- Notes Section -->
+                    <div class="notes-section">
+                        <label>Meeting Notes</label>
+                        <div class="notes-grid">
+                            <div class="note-item-card">
+                                <span class="auto-save-indicator" id="autosave-${meeting.id}">Auto-saved ✓</span>
+                                <div class="note-icon">📝</div>
+                                <textarea class="meeting-notes" placeholder="Enter key discussion points, decisions, and action items...">${escapeHtml(meeting.notes || '')}</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="separator"></div>
+
+                    <!-- Action Buttons -->
+                    <div class="button-group">
+                        <button class="save-btn" onclick="saveMeeting('${meeting.id}')">💾 Save Meeting</button>
+                        <button class="delete-btn" onclick="deleteMeeting('${meeting.id}')">🗑️ Delete</button>
+                    </div>
                 </div>
             `;
+
+            // Add typing detection to all input fields
+            const inputs = card.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    isUserTyping = true;
+                });
+
+                input.addEventListener('blur', () => {
+                    // Wait 2 seconds after losing focus before allowing refresh
+                    if (typingTimeout) clearTimeout(typingTimeout);
+                    typingTimeout = setTimeout(() => {
+                        isUserTyping = false;
+                    }, 2000);
+                });
+
+                input.addEventListener('input', () => {
+                    isUserTyping = true;
+                    // Auto-save after 1.5 seconds of no typing (optimized delay)
+                    debounce(meeting.id, async () => {
+                        await saveMeeting(meeting.id, true); // true = silent save
+                        isUserTyping = false; // Allow refresh after save
+
+                        // Show auto-save indicator briefly
+                        const indicator = document.getElementById(`autosave-${meeting.id}`);
+                        if (indicator) {
+                            indicator.classList.add('show');
+                            setTimeout(() => {
+                                indicator.classList.remove('show');
+                            }, 1500);
+                        }
+                    }, 1500);
+                });
+            });
 
             return card;
         }
@@ -873,7 +1226,7 @@
             return div.innerHTML;
         }
 
-        // Handle participant input
+        // Handle participant input - INSTANT UI UPDATE
         async function handleParticipantInput(event, meetingId) {
             if (event.key === 'Enter') {
                 event.preventDefault();
@@ -881,58 +1234,101 @@
                 const name = input.value.trim();
 
                 if (name) {
-                    const meetings = await loadMeetings();
-                    const meeting = meetings.find(m => m.id === meetingId);
+                    // INSTANT: Create tag immediately in UI
+                    const participantsContainer = input.parentElement;
 
-                    if (meeting) {
-                        if (!Array.isArray(meeting.participants)) {
-                            meeting.participants = [];
-                        }
+                    // Check if already exists
+                    const existingTags = Array.from(participantsContainer.querySelectorAll('.participant-tag'));
+                    const alreadyExists = existingTags.some(tag => tag.textContent.includes(name));
 
-                        // Add participant if not already exists
-                        if (!meeting.participants.includes(name)) {
-                            meeting.participants.push(name);
-                            await saveMeetings(meetings, false);
+                    if (!alreadyExists) {
+                        // Create new tag element instantly
+                        const tagSpan = document.createElement('span');
+                        tagSpan.className = 'participant-tag';
+                        tagSpan.innerHTML = `${escapeHtml(name)}<button onclick="removeParticipant('${meetingId}', '${escapeHtml(name)}')">×</button>`;
 
-                            // Re-render the card
-                            await renderMeetings();
-                        }
+                        // Insert before input field
+                        participantsContainer.insertBefore(tagSpan, input);
+
+                        // Clear input immediately
+                        input.value = '';
+
+                        // Save to backend asynchronously (don't wait)
+                        (async () => {
+                            const meetings = await loadMeetings();
+                            const meeting = meetings.find(m => m.id === meetingId);
+
+                            if (meeting) {
+                                if (!Array.isArray(meeting.participants)) {
+                                    meeting.participants = [];
+                                }
+
+                                if (!meeting.participants.includes(name)) {
+                                    meeting.participants.push(name);
+                                    await saveMeetings(meetings, false);
+                                }
+                            }
+                        })();
+                    } else {
+                        input.value = '';
                     }
-
-                    input.value = '';
                 }
             }
         }
 
-        // Remove participant
+        // Remove participant - INSTANT DELETION
         async function removeParticipant(meetingId, participantName) {
-            const meetings = await loadMeetings();
-            const meeting = meetings.find(m => m.id === meetingId);
+            // INSTANT: Find and remove tag from UI immediately
+            const card = document.querySelector(`[data-id="${meetingId}"]`);
+            if (card) {
+                const participantsContainer = card.querySelector('.participants-input');
+                const participantTags = participantsContainer.querySelectorAll('.participant-tag');
 
-            if (meeting && Array.isArray(meeting.participants)) {
-                meeting.participants = meeting.participants.filter(p => p !== participantName);
-                await saveMeetings(meetings, false);
-                await renderMeetings();
+                participantTags.forEach(tag => {
+                    if (tag.textContent.includes(participantName)) {
+                        // Instant smooth removal animation
+                        tag.style.transition = 'all 0.15s ease';
+                        tag.style.opacity = '0';
+                        tag.style.transform = 'scale(0.8)';
+
+                        // Remove from DOM quickly
+                        setTimeout(() => tag.remove(), 150);
+                    }
+                });
             }
+
+            // Save to backend asynchronously (don't block UI)
+            (async () => {
+                const meetings = await loadMeetings();
+                const meeting = meetings.find(m => m.id === meetingId);
+
+                if (meeting && Array.isArray(meeting.participants)) {
+                    meeting.participants = meeting.participants.filter(p => p !== participantName);
+                    await saveMeetings(meetings, false);
+                }
+            })();
         }
 
-        // Render all meetings
+        // Optimized render - preserves DOM where possible
         async function renderMeetings() {
             const container = document.getElementById('meetingsContainer');
             const meetings = await loadMeetings();
 
-            container.innerHTML = '';
+            // Store current data hash for smart refresh
+            lastFetchedData = JSON.stringify(meetings);
 
             if (meetings.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                        </svg>
-                        <h3>No meetings yet</h3>
-                        <p>Click "Add New Meeting" to get started</p>
-                    </div>
-                `;
+                if (!container.querySelector('.empty-state')) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            <h3>No meetings yet</h3>
+                            <p>Click "Add New Meeting" to get started</p>
+                        </div>
+                    `;
+                }
                 return;
             }
 
@@ -943,17 +1339,52 @@
                 return dateTimeB - dateTimeA;
             });
 
-            meetings.forEach(meeting => {
-                const card = createMeetingCard(meeting);
-                container.appendChild(card);
+            // Get existing cards map
+            const existingCards = new Map();
+            container.querySelectorAll('.meeting-card').forEach(card => {
+                existingCards.set(card.dataset.id, card);
             });
+
+            // Clear empty state if exists
+            const emptyState = container.querySelector('.empty-state');
+            if (emptyState) emptyState.remove();
+
+            // Update or create cards efficiently
+            const fragment = document.createDocumentFragment();
+            const processedIds = new Set();
+
+            meetings.forEach((meeting, index) => {
+                processedIds.add(meeting.id);
+
+                if (existingCards.has(meeting.id)) {
+                    // Card exists - reuse it (prevents input disruption)
+                    const existingCard = existingCards.get(meeting.id);
+                    fragment.appendChild(existingCard);
+                } else {
+                    // New card - create it
+                    const newCard = createMeetingCard(meeting);
+                    fragment.appendChild(newCard);
+                }
+            });
+
+            // Remove deleted cards
+            existingCards.forEach((card, id) => {
+                if (!processedIds.has(id)) {
+                    card.remove();
+                }
+            });
+
+            // Update container efficiently
+            container.innerHTML = '';
+            container.appendChild(fragment);
         }
 
-        // Add new meeting
-        async function addNewMeeting() {
-            const meetings = await loadMeetings();
+        // Add new meeting - SUPER FAST INSTANT RESPONSE
+        function addNewMeeting() {
+            const container = document.getElementById('meetingsContainer');
             const { date, time } = getCurrentDateTime();
 
+            // Create new meeting object
             const newMeeting = {
                 id: generateId(),
                 title: '',
@@ -964,72 +1395,156 @@
                 notes: ''
             };
 
-            meetings.unshift(newMeeting);
-            await saveMeetings(meetings, false);
-            await renderMeetings();
+            // INSTANT UI UPDATE - Add card to DOM immediately (no await!)
+            const emptyState = container.querySelector('.empty-state');
+            if (emptyState) {
+                container.innerHTML = '';
+            }
 
-            // Scroll to top to show the new meeting
+            const newCard = createMeetingCard(newMeeting);
+            container.insertBefore(newCard, container.firstChild);
+
+            // Smooth scroll to top immediately
             window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Focus on title input instantly for immediate editing
+            setTimeout(() => {
+                const titleInput = newCard.querySelector('.meeting-title');
+                if (titleInput) titleInput.focus();
+            }, 50);
+
+            // Save to backend asynchronously in background (don't block UI)
+            (async () => {
+                try {
+                    const meetings = await loadMeetings();
+                    meetings.unshift(newMeeting);
+                    await saveMeetings(meetings, false);
+                } catch (e) {
+                    console.error('Error saving new meeting:', e);
+                }
+            })();
         }
 
-        // Save meeting
-        async function saveMeeting(id) {
-            const meetings = await loadMeetings();
+        // Save meeting - INSTANT FEEDBACK
+        async function saveMeeting(id, silent = false) {
             const card = document.querySelector(`[data-id="${id}"]`);
-
             if (!card) return;
 
+            // Get values from card immediately
             const title = card.querySelector('.meeting-title').value.trim();
             const date = card.querySelector('.meeting-date').value;
             const time = card.querySelector('.meeting-time').value;
             const agenda = card.querySelector('.meeting-agenda').value.trim();
             const notes = card.querySelector('.meeting-notes').value.trim();
 
-            const meetingIndex = meetings.findIndex(m => m.id === id);
-
-            if (meetingIndex !== -1) {
-                // Get current participants
-                const meeting = meetings[meetingIndex];
-
-                meetings[meetingIndex] = {
-                    id: id,
-                    title: title,
-                    date: date,
-                    time: time,
-                    participants: meeting.participants || [],
-                    agenda: agenda,
-                    notes: notes
-                };
-
-                // Save to server (no auto-export)
-                await saveMeetings(meetings, false);
-
-                // Visual feedback
+            // INSTANT visual feedback (before network call)
+            if (!silent) {
                 const saveBtn = card.querySelector('.save-btn');
                 const originalText = saveBtn.textContent;
-                saveBtn.textContent = '✓ Saved!';
-                saveBtn.style.background = '#059669';
+                saveBtn.textContent = '💾 Saving...';
+                saveBtn.style.opacity = '0.7';
+                saveBtn.disabled = true;
+
+                // Show success immediately (optimistic UI)
+                setTimeout(() => {
+                    saveBtn.textContent = '✓ Saved!';
+                    saveBtn.style.background = '#059669';
+                    saveBtn.style.opacity = '1';
+                }, 100);
 
                 setTimeout(() => {
                     saveBtn.textContent = originalText;
                     saveBtn.style.background = '';
-                }, 2000);
-
-                // Don't re-render immediately to avoid UI glitches
-                // Auto-refresh will update in 5 seconds
+                    saveBtn.disabled = false;
+                }, 1500);
             }
+
+            // Save to backend asynchronously (don't block UI)
+            (async () => {
+                try {
+                    const meetings = await loadMeetings();
+                    const meetingIndex = meetings.findIndex(m => m.id === id);
+
+                    if (meetingIndex !== -1) {
+                        // Get current participants from existing data
+                        const meeting = meetings[meetingIndex];
+
+                        meetings[meetingIndex] = {
+                            id: id,
+                            title: title,
+                            date: date,
+                            time: time,
+                            participants: meeting.participants || [],
+                            agenda: agenda,
+                            notes: notes
+                        };
+
+                        // Save to server
+                        await saveMeetings(meetings, false);
+                    }
+                } catch (e) {
+                    console.error('Error saving meeting:', e);
+                    // Show error feedback
+                    if (!silent) {
+                        const saveBtn = card.querySelector('.save-btn');
+                        if (saveBtn) {
+                            saveBtn.textContent = '❌ Error';
+                            saveBtn.style.background = '#ef4444';
+                            setTimeout(() => {
+                                saveBtn.textContent = '💾 Save Meeting';
+                                saveBtn.style.background = '';
+                                saveBtn.disabled = false;
+                            }, 2000);
+                        }
+                    }
+                }
+            })();
         }
 
-        // Delete meeting
+        // Delete meeting - INSTANT REMOVAL
         async function deleteMeeting(id) {
             if (!confirm('Are you sure you want to delete this meeting? This action cannot be undone.')) {
                 return;
             }
 
-            let meetings = await loadMeetings();
-            meetings = meetings.filter(m => m.id !== id);
-            await saveMeetings(meetings, false);
-            await renderMeetings();
+            // INSTANT: Remove card from DOM with smooth animation
+            const card = document.querySelector(`[data-id="${id}"]`);
+            if (card) {
+                // Smooth fade-out and scale animation
+                card.style.transition = 'all 0.3s ease';
+                card.style.opacity = '0';
+                card.style.transform = 'translateX(-20px) scale(0.95)';
+
+                // Remove from DOM after animation
+                setTimeout(() => {
+                    card.remove();
+
+                    // Check if no meetings left, show empty state
+                    const container = document.getElementById('meetingsContainer');
+                    if (container.children.length === 0) {
+                        container.innerHTML = `
+                            <div class="empty-state">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <h3>No meetings yet</h3>
+                                <p>Click "Add New Meeting" to get started</p>
+                            </div>
+                        `;
+                    }
+                }, 300);
+            }
+
+            // Delete from backend asynchronously (don't block UI)
+            (async () => {
+                try {
+                    let meetings = await loadMeetings();
+                    meetings = meetings.filter(m => m.id !== id);
+                    await saveMeetings(meetings, false);
+                } catch (e) {
+                    console.error('Error deleting meeting:', e);
+                }
+            })();
         }
 
     </script>
