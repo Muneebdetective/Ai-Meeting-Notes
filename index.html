@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discussion on the possible use cases for AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .add-meeting-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-bottom: 30px;
+        }
+
+        .add-meeting-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .add-meeting-btn:active {
+            transform: translateY(0);
+        }
+
+        .meetings-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .meeting-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 25px;
+            background: #fafafa;
+            transition: box-shadow 0.3s;
+            position: relative;
+        }
+
+        .meeting-card:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .meeting-header {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .input-group {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .input-group.full-width {
+            flex: 100%;
+        }
+
+        .input-group label {
+            display: block;
+            color: #555;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-group input, .input-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        .input-group textarea {
+            min-height: 60px;
+            resize: vertical;
+        }
+
+        .input-group input:focus, .input-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .participants-input {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            min-height: 40px;
+            background: white;
+        }
+
+        .participant-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            background: #667eea;
+            color: white;
+            border-radius: 15px;
+            font-size: 13px;
+        }
+
+        .participant-tag button {
+            background: transparent;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 0;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .participant-input-field {
+            flex: 1;
+            border: none;
+            outline: none;
+            min-width: 100px;
+            font-size: 14px;
+        }
+
+        .notes-section {
+            margin-bottom: 20px;
+        }
+
+        .notes-section label {
+            display: block;
+            color: #555;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .notes-list {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 10px;
+            min-height: 150px;
+            background: white;
+        }
+
+        .note-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .note-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .note-bullet {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 16px;
+            padding-top: 8px;
+            min-width: 20px;
+        }
+
+        .note-input {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .note-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .note-input:hover {
+            border-color: #a5b4fc;
+        }
+
+        .delete-note-btn {
+            padding: 8px 10px;
+            background: transparent;
+            color: #ef4444;
+            border: 1px solid #ef4444;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            opacity: 0.6;
+            margin-top: 2px;
+        }
+
+        .delete-note-btn:hover {
+            background: #ef4444;
+            color: white;
+            opacity: 1;
+        }
+
+        .note-item:hover .delete-note-btn {
+            opacity: 1;
+        }
+
+        .add-point-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 16px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.2s;
+        }
+
+        .add-point-btn:hover {
+            background: #5568d3;
+            transform: translateY(-1px);
+        }
+
+        .add-point-btn:active {
+            transform: translateY(0);
+        }
+
+        .separator {
+            height: 1px;
+            background: linear-gradient(to right, transparent, #ddd, transparent);
+            margin: 20px 0;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .save-btn, .delete-btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .save-btn {
+            background: #10b981;
+            color: white;
+        }
+
+        .save-btn:hover {
+            background: #059669;
+            transform: translateY(-1px);
+        }
+
+        .delete-btn {
+            background: #ef4444;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+        }
+
+        /* Password Protection Styles */
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 50px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .login-container h2 {
+            color: #333;
+            font-size: 26px;
+            margin-bottom: 10px;
+        }
+
+        .login-container p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .login-input-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .login-input-group label {
+            display: block;
+            color: #555;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .login-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-error {
+            color: #ef4444;
+            font-size: 13px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .login-error.show {
+            display: block;
+        }
+
+        .logout-btn {
+            padding: 8px 16px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: #dc2626;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+            20%, 40%, 60%, 80% { transform: translateX(10px); }
+        }
+
+        .data-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .export-btn, .import-btn {
+            padding: 10px 20px;
+            background: #6366f1;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .export-btn:hover, .import-btn:hover {
+            background: #4f46e5;
+        }
+
+        .import-btn {
+            background: #10b981;
+        }
+
+        .import-btn:hover {
+            background: #059669;
+        }
+
+        .ideas-btn {
+            padding: 10px 20px;
+            background: #f59e0b;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .ideas-btn:hover {
+            background: #d97706;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .meeting-header {
+                flex-direction: column;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .save-btn, .delete-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Overlay -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-container">
+            <h2>🔒 Secure Access</h2>
+            <p>Enter password to access meeting notes</p>
+            <form onsubmit="handleLogin(event)">
+                <div class="login-input-group">
+                    <label>Password</label>
+                    <input type="password" class="login-input" id="passwordInput" placeholder="Enter password" required autofocus>
+                </div>
+                <button type="submit" class="login-btn">Access</button>
+                <div class="login-error" id="loginError">Incorrect password. Please try again.</div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container" id="mainContainer" style="display: none;">
+        <div class="header">
+            <h1>Discussion on the possible use cases for AI</h1>
+            <p>Track your meeting discussions and key points</p>
+        </div>
+
+        <div class="data-controls">
+            <button class="export-btn" onclick="exportData()">Export Data</button>
+            <button class="import-btn" onclick="document.getElementById('fileInput').click()">Import Data</button>
+            <button class="ideas-btn" onclick="window.location.href='idea.html'">Ideas</button>
+            <button class="logout-btn" onclick="handleLogout()">Logout</button>
+            <input type="file" id="fileInput" accept=".json" onchange="loadFromFile(event)">
+        </div>
+
+        <button class="add-meeting-btn" onclick="addNewMeeting()">
+            + Add New Meeting
+        </button>
+
+        <div class="meetings-container" id="meetingsContainer">
+            <!-- Meeting cards will be dynamically added here -->
+        </div>
+    </div>
+
+    <script>
+        // Password Protection Configuration
+        const APP_PASSWORD = 'netpace2025'; // Change this to your desired password
+        const SESSION_TIMEOUT = 30 * 60 * 1000; // 30 minutes in milliseconds
+
+        // Debounce utility for auto-save
+        let autoSaveTimers = {};
+        function debounce(key, func, delay) {
+            if (autoSaveTimers[key]) {
+                clearTimeout(autoSaveTimers[key]);
+            }
+            autoSaveTimers[key] = setTimeout(func, delay);
+        }
+
+        // Check authentication on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            checkAuthentication();
+        });
+
+        // Press Ctrl+Shift+L to force logout (for testing)
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.shiftKey && e.key === 'L') {
+                localStorage.removeItem('appAuth');
+                location.reload();
+            }
+        });
+
+        // Check if user is authenticated
+        function checkAuthentication() {
+            const authData = localStorage.getItem('appAuth');
+
+            if (authData) {
+                try {
+                    const { timestamp } = JSON.parse(authData);
+                    const now = Date.now();
+
+                    // Check if session is still valid
+                    if (now - timestamp < SESSION_TIMEOUT) {
+                        // Update timestamp
+                        localStorage.setItem('appAuth', JSON.stringify({ timestamp: now }));
+                        showMainApp();
+                        return;
+                    }
+                } catch (e) {
+                    console.error('Auth check error:', e);
+                }
+            }
+
+            // Not authenticated or session expired
+            showLogin();
+        }
+
+        // Handle login
+        function handleLogin(event) {
+            event.preventDefault();
+
+            const passwordInput = document.getElementById('passwordInput');
+            const password = passwordInput.value;
+            const errorDiv = document.getElementById('loginError');
+
+            // Simple password check (you can make this more secure)
+
+            if (password === APP_PASSWORD) {
+                // Store authentication with timestamp
+                localStorage.setItem('appAuth', JSON.stringify({ timestamp: Date.now() }));
+
+                // Show main app
+                showMainApp();
+
+                // Clear password input
+                passwordInput.value = '';
+                errorDiv.classList.remove('show');
+            } else {
+                // Show error
+                errorDiv.classList.add('show');
+                passwordInput.value = '';
+                passwordInput.focus();
+
+                // Shake animation
+                const loginContainer = document.querySelector('.login-container');
+                loginContainer.style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    loginContainer.style.animation = '';
+                }, 500);
+            }
+        }
+
+        // Handle logout
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('appAuth');
+                showLogin();
+            }
+        }
+
+        // Show login screen
+        function showLogin() {
+            document.getElementById('loginOverlay').style.display = 'flex';
+            document.getElementById('mainContainer').style.display = 'none';
+        }
+
+        // Track if user is currently typing to prevent refresh interruption
+        let isUserTyping = false;
+        let typingTimeout = null;
+
+        // Show main application
+        function showMainApp() {
+            document.getElementById('loginOverlay').style.display = 'none';
+            document.getElementById('mainContainer').style.display = 'block';
+            renderMeetings();
+
+            // Auto-refresh data every 5 seconds (but skip if user is typing)
+            setInterval(async () => {
+                if (!isUserTyping) {
+                    await renderMeetings();
+                }
+            }, 5000);
+        }
+
+        // Generate unique ID
+        function generateId() {
+            return 'meeting-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        }
+
+        // Get current date and time in required format
+        function getCurrentDateTime() {
+            const now = new Date();
+            const date = now.toISOString().split('T')[0];
+            const time = now.toTimeString().split(':').slice(0, 2).join(':');
+            return { date, time };
+        }
+
+        // API Configuration - FastAPI REST API
+        const API_BASE_URL = 'http://localhost:8000';
+
+        // Load meetings from server (shared data)
+        async function loadMeetings() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/meetings`);
+                const data = await response.json();
+                const meetings = data.meetings || [];
+
+                // Ensure all meetings have proper structure
+                return meetings.map(m => ({
+                    id: m.id || generateId(),
+                    title: m.title || '',
+                    date: m.date || '',
+                    time: m.time || '',
+                    participants: Array.isArray(m.participants) ? m.participants : [],
+                    agenda: m.agenda || '',
+                    notes: m.notes || ''
+                }));
+            } catch (e) {
+                console.error('Error loading meetings from server:', e);
+                // Fallback to localStorage if server fails
+                const stored = localStorage.getItem('meetingsData');
+                if (stored) {
+                    try {
+                        const data = JSON.parse(stored);
+                        return data.meetings || [];
+                    } catch (err) {
+                        return [];
+                    }
+                }
+                return [];
+            }
+        }
+
+        // Save meetings to server (shared data)
+        async function saveMeetings(meetings, autoExport = false) {
+            const data = { meetings: meetings };
+
+            // Save to server for sharing across users using FastAPI REST API
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/meetings/bulk`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                if (!result.success) {
+                    console.error('Error saving to server:', result.message);
+                }
+            } catch (e) {
+                console.error('Error saving to server:', e);
+                // Fallback to localStorage
+                localStorage.setItem('meetingsData', JSON.stringify(data));
+            }
+
+            // Auto-export/download if requested (manual export button)
+            if (autoExport) {
+                syncToDataJson(data);
+            }
+        }
+
+        // Sync data to data.json file (download)
+        function syncToDataJson(data) {
+            try {
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'data.json';
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            } catch (e) {
+                console.error('Error syncing to data.json:', e);
+            }
+        }
+
+        // Load data from uploaded JSON file
+        async function loadFromFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.meetings && Array.isArray(data.meetings)) {
+                        // Save to server so all users can see it
+                        await saveMeetings(data.meetings, false);
+                        await renderMeetings();
+                        alert('Data loaded and synchronized to all users!');
+                    } else {
+                        alert('Invalid data format in JSON file.');
+                    }
+                } catch (error) {
+                    alert('Error loading file: ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // Export data manually
+        async function exportData() {
+            const meetings = await loadMeetings();
+            const data = { meetings: meetings };
+            syncToDataJson(data);
+        }
+
+        // Create meeting card HTML
+        function createMeetingCard(meeting) {
+            const card = document.createElement('div');
+            card.className = 'meeting-card';
+            card.dataset.id = meeting.id;
+
+            const participantsHtml = (meeting.participants || [])
+                .map(p => `<span class="participant-tag">${escapeHtml(p)}<button onclick="removeParticipant('${meeting.id}', '${escapeHtml(p)}')">×</button></span>`)
+                .join('');
+
+            card.innerHTML = `
+                <div class="meeting-header">
+                    <div class="input-group full-width">
+                        <label>Meeting Title</label>
+                        <input type="text" class="meeting-title" value="${escapeHtml(meeting.title || '')}" placeholder="Enter meeting title">
+                    </div>
+                    <div class="input-group">
+                        <label>Date</label>
+                        <input type="date" class="meeting-date" value="${meeting.date}">
+                    </div>
+                    <div class="input-group">
+                        <label>Time</label>
+                        <input type="time" class="meeting-time" value="${meeting.time}">
+                    </div>
+                    <div class="input-group full-width">
+                        <label>Participants</label>
+                        <div class="participants-input" data-meeting-id="${meeting.id}">
+                            ${participantsHtml}
+                            <input type="text" class="participant-input-field" placeholder="Type name and press Enter"
+                                   onkeydown="handleParticipantInput(event, '${meeting.id}')">
+                        </div>
+                    </div>
+                    <div class="input-group full-width">
+                        <label>Agenda</label>
+                        <textarea class="meeting-agenda" placeholder="Enter meeting agenda">${escapeHtml(meeting.agenda || '')}</textarea>
+                    </div>
+                </div>
+
+                <div class="notes-section">
+                    <label>Notes</label>
+                    <textarea class="meeting-notes" placeholder="Enter meeting notes" style="min-height: 150px;">${escapeHtml(meeting.notes || '')}</textarea>
+                </div>
+
+                <div class="separator"></div>
+
+                <div class="button-group">
+                    <button class="save-btn" onclick="saveMeeting('${meeting.id}')">Save</button>
+                    <button class="delete-btn" onclick="deleteMeeting('${meeting.id}')">Delete</button>
+                </div>
+            `;
+
+            return card;
+        }
+
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Handle participant input
+        async function handleParticipantInput(event, meetingId) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const input = event.target;
+                const name = input.value.trim();
+
+                if (name) {
+                    const meetings = await loadMeetings();
+                    const meeting = meetings.find(m => m.id === meetingId);
+
+                    if (meeting) {
+                        if (!Array.isArray(meeting.participants)) {
+                            meeting.participants = [];
+                        }
+
+                        // Add participant if not already exists
+                        if (!meeting.participants.includes(name)) {
+                            meeting.participants.push(name);
+                            await saveMeetings(meetings, false);
+
+                            // Re-render the card
+                            await renderMeetings();
+                        }
+                    }
+
+                    input.value = '';
+                }
+            }
+        }
+
+        // Remove participant
+        async function removeParticipant(meetingId, participantName) {
+            const meetings = await loadMeetings();
+            const meeting = meetings.find(m => m.id === meetingId);
+
+            if (meeting && Array.isArray(meeting.participants)) {
+                meeting.participants = meeting.participants.filter(p => p !== participantName);
+                await saveMeetings(meetings, false);
+                await renderMeetings();
+            }
+        }
+
+        // Render all meetings
+        async function renderMeetings() {
+            const container = document.getElementById('meetingsContainer');
+            const meetings = await loadMeetings();
+
+            container.innerHTML = '';
+
+            if (meetings.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        <h3>No meetings yet</h3>
+                        <p>Click "Add New Meeting" to get started</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Sort meetings by date and time (newest first)
+            meetings.sort((a, b) => {
+                const dateTimeA = new Date(a.date + ' ' + a.time);
+                const dateTimeB = new Date(b.date + ' ' + b.time);
+                return dateTimeB - dateTimeA;
+            });
+
+            meetings.forEach(meeting => {
+                const card = createMeetingCard(meeting);
+                container.appendChild(card);
+            });
+        }
+
+        // Add new meeting
+        async function addNewMeeting() {
+            const meetings = await loadMeetings();
+            const { date, time } = getCurrentDateTime();
+
+            const newMeeting = {
+                id: generateId(),
+                title: '',
+                date: date,
+                time: time,
+                participants: [],
+                agenda: '',
+                notes: ''
+            };
+
+            meetings.unshift(newMeeting);
+            await saveMeetings(meetings, false);
+            await renderMeetings();
+
+            // Scroll to top to show the new meeting
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Save meeting
+        async function saveMeeting(id) {
+            const meetings = await loadMeetings();
+            const card = document.querySelector(`[data-id="${id}"]`);
+
+            if (!card) return;
+
+            const title = card.querySelector('.meeting-title').value.trim();
+            const date = card.querySelector('.meeting-date').value;
+            const time = card.querySelector('.meeting-time').value;
+            const agenda = card.querySelector('.meeting-agenda').value.trim();
+            const notes = card.querySelector('.meeting-notes').value.trim();
+
+            const meetingIndex = meetings.findIndex(m => m.id === id);
+
+            if (meetingIndex !== -1) {
+                // Get current participants
+                const meeting = meetings[meetingIndex];
+
+                meetings[meetingIndex] = {
+                    id: id,
+                    title: title,
+                    date: date,
+                    time: time,
+                    participants: meeting.participants || [],
+                    agenda: agenda,
+                    notes: notes
+                };
+
+                // Save to server (no auto-export)
+                await saveMeetings(meetings, false);
+
+                // Visual feedback
+                const saveBtn = card.querySelector('.save-btn');
+                const originalText = saveBtn.textContent;
+                saveBtn.textContent = '✓ Saved!';
+                saveBtn.style.background = '#059669';
+
+                setTimeout(() => {
+                    saveBtn.textContent = originalText;
+                    saveBtn.style.background = '';
+                }, 2000);
+
+                // Don't re-render immediately to avoid UI glitches
+                // Auto-refresh will update in 5 seconds
+            }
+        }
+
+        // Delete meeting
+        async function deleteMeeting(id) {
+            if (!confirm('Are you sure you want to delete this meeting? This action cannot be undone.')) {
+                return;
+            }
+
+            let meetings = await loadMeetings();
+            meetings = meetings.filter(m => m.id !== id);
+            await saveMeetings(meetings, false);
+            await renderMeetings();
+        }
+
+    </script>
+</body>
+</html>

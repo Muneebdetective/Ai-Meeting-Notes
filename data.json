@@ -1,0 +1,17 @@
+{
+  "meetings": [
+    {
+      "id": "meeting-1760606714788-7a0a3quyx",
+      "title": "kinsey project",
+      "date": "2025-10-16",
+      "time": "14:25",
+      "participants": [
+        "zain",
+        "muneeb",
+        "omar khan"
+      ],
+      "agenda": "how to handle upwork projects",
+      "notes": "1: do documentation\n2: make terms and conditions"
+    }
+  ]
+}
