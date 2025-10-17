@@ -183,109 +183,79 @@
         .notes-section label {
             display: block;
             color: #555;
-            font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 15px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
         }
 
-        .notes-list {
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            padding: 10px;
-            min-height: 150px;
-            background: white;
+        /* Horizontal professional card layout for notes */
+        .notes-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0;
         }
 
-        .note-item {
+        .note-item-card {
             display: flex;
             align-items: flex-start;
-            gap: 10px;
-            margin-bottom: 10px;
-            position: relative;
+            gap: 15px;
+            background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+            border: 2px solid #e0e7ff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.08);
+            transition: all 0.3s ease;
         }
 
-        .note-item:last-child {
-            margin-bottom: 0;
+        .note-item-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.15);
+            transform: translateY(-2px);
         }
 
-        .note-bullet {
-            color: #667eea;
-            font-weight: bold;
-            font-size: 16px;
-            padding-top: 8px;
-            min-width: 20px;
+        .note-icon {
+            font-size: 28px;
+            min-width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            flex-shrink: 0;
         }
 
-        .note-input {
+        .meeting-notes {
             flex: 1;
-            padding: 10px 12px;
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
+            padding: 15px 18px;
+            border: 1px solid #e0e7ff;
+            border-radius: 8px;
             font-size: 14px;
+            line-height: 1.8;
             font-family: inherit;
             transition: all 0.3s;
             background: white;
+            resize: vertical;
+            min-height: 120px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
-        .note-input:focus {
+        .meeting-notes:focus {
             outline: none;
             border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15), inset 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
-        .note-input:hover {
+        .meeting-notes:hover {
             border-color: #a5b4fc;
         }
 
-        .delete-note-btn {
-            padding: 8px 10px;
-            background: transparent;
-            color: #ef4444;
-            border: 1px solid #ef4444;
-            border-radius: 4px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-            white-space: nowrap;
-            opacity: 0.6;
-            margin-top: 2px;
-        }
-
-        .delete-note-btn:hover {
-            background: #ef4444;
-            color: white;
-            opacity: 1;
-        }
-
-        .note-item:hover .delete-note-btn {
-            opacity: 1;
-        }
-
-        .add-point-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 8px 16px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: all 0.2s;
-        }
-
-        .add-point-btn:hover {
-            background: #5568d3;
-            transform: translateY(-1px);
-        }
-
-        .add-point-btn:active {
-            transform: translateY(0);
+        .meeting-notes::placeholder {
+            color: #9ca3af;
+            font-style: italic;
         }
 
         .separator {
@@ -875,8 +845,13 @@
                 </div>
 
                 <div class="notes-section">
-                    <label>Notes</label>
-                    <textarea class="meeting-notes" placeholder="Enter meeting notes" style="min-height: 150px;">${escapeHtml(meeting.notes || '')}</textarea>
+                    <label>Meeting Notes</label>
+                    <div class="notes-grid">
+                        <div class="note-item-card">
+                            <div class="note-icon">📝</div>
+                            <textarea class="meeting-notes" placeholder="Enter your meeting notes here...">${escapeHtml(meeting.notes || '')}</textarea>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="separator"></div>
